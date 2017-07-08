@@ -5,11 +5,11 @@ class Group_helper:
 
     def return_to_groups_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("model page").click()
+        wd.find_element_by_link_text("group page").click()
 
     def create(self, group):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.open_groups_page()
         # init model creation
         wd.find_element_by_name("new").click()
         # fill model form
