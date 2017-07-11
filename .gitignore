@@ -99,3 +99,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+add_new_contact
+add_new_contact
+add_new_contact
+test_add_contact.py
+recorded.py
+test_add_contact.py
+test_add_group.py
+test_add_group.py
