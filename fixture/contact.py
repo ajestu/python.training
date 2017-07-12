@@ -10,18 +10,8 @@ class contactHelper:
     def create(self, contact):
         wd = self.app.wd
         self.add_contact()
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(contact.middlename)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("nickname").click()
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(contact.nickname)
+        self.fill_contact_form(contact)
+        #submit
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
     def go_to_home_page(self):
@@ -64,3 +54,8 @@ class contactHelper:
             wd.find_element_by_name(field_name).click()
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
+
+    def count(self):
+        wd = self.app.wd
+        self.go_to_home_page()
+        return len(wd.find_elements_by_name("selected[]"))
