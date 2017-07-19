@@ -24,6 +24,5 @@ class Application:
             return  False
 
 
-
     def destroy(self):
         self.wd.quit()

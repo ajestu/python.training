@@ -1,3 +1,5 @@
+from model.group import Group
+
 class Group_helper:
 
     def __init__(self, app):
@@ -48,7 +50,7 @@ class Group_helper:
 
     def fill_group_form(self, group):
         wd = self.app.wd
-        self.change_field_value("group_name", group.group_name)
+        self.change_field_value("group_name", group.name)
         self.change_field_value("group_header", group.header)
         self.change_field_value("group_footer", group.footer)
 
@@ -63,3 +65,14 @@ class Group_helper:
         wd = self.app.wd
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_group_list(self):
+        wd = self.app.wd
+        self.open_groups_page()
+        groups= []
+        for element in wd.find_elements_by_css_selector("span.group"):
+            text= element.text
+            id= element.find_element_by_name("selected[]").get_attribute("value")
+            groups.append(Group(name=text,id=id ))
+        return groups
+

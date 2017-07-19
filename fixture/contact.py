@@ -1,3 +1,5 @@
+from model.contact import Contact
+
 class contactHelper:
 
     def __init__(self, app):
@@ -9,16 +11,16 @@ class contactHelper:
 
     def create(self, contact):
         wd = self.app.wd
-        self.go_to_contacts_page()
+        self.open_contacts_page()
         self.add_contact()
         self.fill_contact_form(contact)
         #submit
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-        self.go_to_contacts_page()
+        self.open_contacts_page()
 
-    def go_to_contacts_page(self):
+    def open_contacts_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/index.php") or wd.current_url.endswith("/addressbook/")):
+        if not (wd.current_url.endswith("/index.php") or wd.current_url.endswith("localhost/addressbook/")):
             wd.find_element_by_link_text("home").click()
 
     def delete_first_contact(self):
@@ -26,7 +28,7 @@ class contactHelper:
         self.select_first_contact()
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
-        self.go_to_contacts_page()
+        self.open_contacts_page()
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -34,7 +36,7 @@ class contactHelper:
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
-        self.go_to_contacts_page()
+        self.open_contacts_page()
         self.select_first_contact()
         # open modification form
         wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
@@ -42,7 +44,7 @@ class contactHelper:
         self.fill_contact_form(new_contact_data)
         # submit
         wd.find_element_by_name("update").click()
-        self.go_to_contacts_page()
+        self.open_contacts_page()
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -60,5 +62,15 @@ class contactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.go_to_contacts_page()
+        self.open_contacts_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.open_contacts_page()
+        contacts= []
+        for element in wd.find_elements_by_css_selector("tr.entry"):
+            text= element.text
+            id= element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Contact(firstname= text, id=id ))
+        return contacts
