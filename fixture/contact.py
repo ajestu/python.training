@@ -17,6 +17,7 @@ class contactHelper:
         #submit
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.open_contacts_page()
+        self.contact_cashe = None
 
     def open_contacts_page(self):
         wd = self.app.wd
@@ -29,6 +30,7 @@ class contactHelper:
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
         self.open_contacts_page()
+        self.contact_cashe = None
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -45,6 +47,7 @@ class contactHelper:
         # submit
         wd.find_element_by_name("update").click()
         self.open_contacts_page()
+        self.contact_cashe = None
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -65,13 +68,19 @@ class contactHelper:
         self.open_contacts_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cashe = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.open_contacts_page()
-        contacts= []
-        for element in wd.find_elements_by_css_selector( "tr[name='entry']"):
-            cells = element.find_elements_by_css_selector("td")
-            text= cells[2].text
-            id = cells[0].find_element_by_css_selector("input").get_attribute("value")
-            contacts.append(Contact( id=id, firstname= text ))
-        return contacts
+        if self.contact_cashe is None:
+            wd = self.app.wd
+            self.open_contacts_page()
+            self.contact_cashe= []
+            for element in wd.find_elements_by_css_selector( "tr[name='entry']"):
+                cells = element.find_elements_by_css_selector("td")
+                text= cells[2].text
+                id = cells[0].find_element_by_css_selector("input").get_attribute("value")
+                self.contact_cashe.append(Contact( id=id, firstname= text ))
+        return list(self.contact_cashe)
+
+
+
