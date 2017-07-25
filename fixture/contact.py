@@ -77,10 +77,14 @@ class contactHelper:
         wd = self.app.wd
         self.change_field_value("firstname", contact.firstname)
         self.change_field_value("lastname", contact.lastname)
-        self.change_field_value("homephone", contact.homephone)
-        self.change_field_value("mobilephone", contact.mobilephone)
-        self.change_field_value("workphone", contact.workphone)
-        self.change_field_value("secondphone", contact.secondphone)
+        self.change_field_value("home", contact.homephone)
+        self.change_field_value("mobile", contact.mobilephone)
+        self.change_field_value("work", contact.workphone)
+        self.change_field_value("phone2", contact.secondphone)
+        self.change_field_value("address", contact.address)
+        self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -128,7 +132,6 @@ class contactHelper:
         email = wd.find_element_by_name("email").get_attribute("value")
         email2 = wd.find_element_by_name("email2").get_attribute("value")
         email3 = wd.find_element_by_name("email3").get_attribute("value")
-
         return Contact(firstname = firstname, lastname = lastname, id=id, homephone=homephone, workphone=workphone,
                         mobilephone=mobilephone, secondphone=secondphone, address=address, email=email,email2=email2,email3=email3)
 
