@@ -13,7 +13,7 @@ except getopt.GetoptError as err:
     sys.exit(2)
 
 n = 3
-f = "data/contact.json"
+f = "data/contacts.json"
 
 for o, a in opts :
     if o == "-n" :
@@ -31,7 +31,8 @@ testdata = [Contact(firstname="", lastname="", homephone= "",  mobilephone= "", 
             homephone= random_string("homephone", 10), mobilephone= random_string("mobilephone", 10), workphone= random_string("workphone", 10),
             secondphone= random_string("secondphone", 10) ,email=random_string("email", 10), email2=random_string("email2", 10),
             email3=random_string("email3", 10))
-    for i in range (n)]
+    for i in range (n)
+]
 
 file = os.path.join(os.path.dirname(os.path.abspath(__file__)),".." , f)
 with open(file,"w") as out:
