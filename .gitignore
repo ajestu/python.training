@@ -104,3 +104,5 @@ ENV/
 data/group.json
 data/contact.json
 .idea/workspace.xml
+test/test_db_matches_ui.py
+check_db_connection.py

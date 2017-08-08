@@ -36,12 +36,23 @@ class contactHelper:
         self.open_contacts_page()
         self.contact_cashe = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.select_contact_by_id(id)
+        wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+        self.open_contacts_page()
+        self.contact_cashe = None
     def select_first_contact(self):
         self.select_contact_by_index(0)
 
     def select_contact_by_index(self,index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
@@ -57,6 +68,13 @@ class contactHelper:
         cell = row.find_elements_by_tag_name("td")[6]
         cell.find_element_by_tag_name("a").click()
 
+    def open_contacts_view_by_id(self, id):
+        wd = self.app.wd
+        self.open_contacts_page()
+        row = wd.find_element_by_id(id)
+        cell = row.find_elements_by_tag_name("td")[6]
+        cell.find_element_by_tag_name("a").click()
+
     def modify_first_contact(self, new_contact_data):
         self.modify_contact_by_index(0)
 
@@ -66,6 +84,28 @@ class contactHelper:
         self.select_contact_by_index(index )
         # open modification form
         wd.find_elements_by_xpath("//img[@title='Edit']")[index].click()
+        # fill group form
+        self.fill_contact_form(new_contact_data)
+        # submit
+        wd.find_element_by_name("update").click()
+        self.open_contacts_page()
+        self.contact_cashe = None
+
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.open_contacts_page()
+        for row in wd.find_elements_by_name("entry"):
+            cells=row.find_elements_by_css_selector("td")
+            idz = cells[0].find_element_by_tag_name("input").get_attribute("value")
+            if idz==id  :
+                cells[7].click()
+                break
+
+
+
+    def modify_contact_by_id(self, id, new_contact_data):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_id(id)
         # fill group form
         self.fill_contact_form(new_contact_data)
         # submit
