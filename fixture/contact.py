@@ -43,12 +43,9 @@ class contactHelper:
         wd.switch_to_alert().accept()
         self.open_contacts_page()
         self.contact_cashe = None
+
     def select_first_contact(self):
         self.select_contact_by_index(0)
-
-    def select_contact_by_index(self,index):
-        wd = self.app.wd
-        wd.find_elements_by_name("selected[]")[index].click()
 
     def select_contact_by_id(self, id):
         wd = self.app.wd
@@ -94,13 +91,10 @@ class contactHelper:
     def open_contact_to_edit_by_id(self, id):
         wd = self.app.wd
         self.open_contacts_page()
-        for row in wd.find_elements_by_name("entry"):
-            cells=row.find_elements_by_css_selector("td")
-            idz = cells[0].find_element_by_tag_name("input").get_attribute("value")
-            if idz==id  :
-                cells[7].click()
-                break
-
+        chk= wd.find_element_by_xpath('//input[@id="%s"]'%id)
+        row=chk.find_element_by_xpath("./../..")
+        cells=row.find_elements_by_css_selector("td")
+        cells[7].click()
 
 
     def modify_contact_by_id(self, id, new_contact_data):
@@ -157,6 +151,26 @@ class contactHelper:
                                                   all_phones_from_homepage=all_phones,address=address,all_emails=all_emails ))
         return list(self.contact_cashe)
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def get_contact_from_home_page(self,id):
+            wd = self.app.wd
+            self.app.open_home_page()
+            chk = wd.find_element_by_xpath('//input[@id="%s"][@name="selected[]"]' % id)
+            row = chk.find_element_by_xpath("./../..")
+            cells = row.find_elements_by_css_selector("td")
+            firstname = cells[2].text
+            lastname = cells[1].text
+            id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+            all_phones = cells[5].text
+            all_emails=cells[4].text
+            address=cells[3].text
+            return Contact(firstname = firstname, lastname = lastname, id = id,
+                                          all_phones_from_homepage=all_phones,address=address,all_emails=all_emails )
+
+    #[ @ name = "selected[]"]
 
     def get_contact_info_from_edit_page(self, index):
         wd=self.app.wd

@@ -1,4 +1,4 @@
-
+import re
 from model.group import Group
 from model.contact import Contact
 import mysql.connector
@@ -36,6 +36,20 @@ class DbFixture:
         finally:
             cursor.close()
         return list
+
+    def get_contact_info_from_db(self,id):
+        contact = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, firstname, lastname, address,email, email2,email3, home,mobile,work,phone2 from addressbook where id=%s "%id)
+            for row in cursor:
+                (id, firstname, lastname, address,email, email2,email3, home,mobile,work,phone2) =row
+                contact.append(Contact(id=str(id), firstname=firstname, lastname=lastname,email=email,email2=email2,email3=email3,homephone=home,mobilephone=mobile, workphone=work,secondphone=phone2
+))
+        finally:
+            cursor.close()
+        return contact[0]
+
 
     def destroy(self):
         self.connection.close()
