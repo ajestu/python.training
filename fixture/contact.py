@@ -198,3 +198,15 @@ class contactHelper:
         mobilephone = re.search("M: (.*)", text).group(1)
         secondphone = re.search("P: (.*)", text).group(1)
         return Contact(homephone=homephone, workphone=workphone, mobilephone=mobilephone, secondphone=secondphone)
+
+    def add_list_to_group(self,list_of_contacts,group):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # mark the necessary contacs to add to group
+        for i in list_of_contacts:
+            wd.find_element_by_id(i.id).click()
+        #choose the group
+        wd.find_element_by_name("to_group")
+    #    wd.find_element_by_xpath("//div[@class='right']/select//option[%s]"%group.id)
+        #click add
+        wd.find_element_by_name("add").click()
