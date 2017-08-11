@@ -205,8 +205,18 @@ class contactHelper:
         # mark the necessary contacs to add to group
         for i in list_of_contacts:
             wd.find_element_by_id(i.id).click()
-        #choose the group
-        wd.find_element_by_name("to_group")
-    #    wd.find_element_by_xpath("//div[@class='right']/select//option[%s]"%group.id)
+        #choose the groupe
+        wd.find_element_by_xpath('//option[@value="%s"]'%group.id).click()
+       # wd.find_element_by_name("to_group").send_keys(group.id)
+     #   wd.find_element_by_xpath("//div[@class='right']/select//option[1]"%group.id).send_keys()
         #click add
         wd.find_element_by_name("add").click()
+        return list_of_contacts
+
+    def delete_list_from_group(self,list,group):
+        wd = self.app.wd
+        wd.find_element_by_xpath('//option[@value="%s"]' % group.id).click()
+        for contact in list:
+            wd.find_element_by_id(contact.id).click()
+        wd.find_element_by_css_selector("input[value='Delete']").click()
+        return group

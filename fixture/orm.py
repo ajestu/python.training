@@ -3,6 +3,8 @@ from model.contact import Contact
 from pony.orm import *
 from datetime import datetime
 from pymysql.converters import encoders, decoders, convert_mysql_timestamp
+from sys import maxsize
+
 
 class ORMFixture:
 
@@ -30,10 +32,7 @@ class ORMFixture:
 
 
     def __init__(self,host,name,user,password):
-        conv = encoders
-        conv.update(decoders)
-        conv[datetime] = convert_mysql_timestamp
-        self.db.bind('mysql',host=host,database=name, user=user,password=password,conv=conv)
+        self.db.bind('mysql',host=host,database=name, user=user,password=password,conv=encoders)
         self.db.generate_mapping()
         sql_debug(True)
 
